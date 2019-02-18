@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzu.translate.dao.TaskMapper">
+  <resultMap id="BaseResultMap" type="com.hzu.translate.entity.Task">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="team_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="task_title" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="task_status" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="task_grouping" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="source_file" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="translate_file" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="task_deadline" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="task_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="task_schedule" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="created_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="updated_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hzu.translate.entity.TaskWithBLOBs">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="team_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="task_title" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="task_status" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="task_grouping" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="source_file" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="translate_file" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="task_deadline" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="task_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="task_schedule" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="created_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="updated_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="task_details" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+      <arg column="task_translate" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, team_id, task_title, task_status, task_grouping, source_file, translate_file, 
+    task_deadline, task_type, task_schedule, created_time, updated_time
+  </sql>
+  <sql id="Blob_Column_List">
+    task_details, task_translate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from trans_task
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from trans_task
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hzu.translate.entity.TaskWithBLOBs">
+    insert into trans_task (id, team_id, task_title, 
+      task_status, task_grouping, source_file, 
+      translate_file, task_deadline, task_type, 
+      task_schedule, created_time, updated_time, 
+      task_details, task_translate)
+    values (#{id,jdbcType=BIGINT}, #{teamId,jdbcType=BIGINT}, #{taskTitle,jdbcType=VARCHAR}, 
+      #{taskStatus,jdbcType=INTEGER}, #{taskGrouping,jdbcType=VARCHAR}, #{sourceFile,jdbcType=VARCHAR}, 
+      #{translateFile,jdbcType=VARCHAR}, #{taskDeadline,jdbcType=DATE}, #{taskType,jdbcType=INTEGER}, 
+      #{taskSchedule,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, 
+      #{taskDetails,jdbcType=LONGVARCHAR}, #{taskTranslate,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hzu.translate.entity.TaskWithBLOBs">
+    insert into trans_task
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="teamId != null">
+        team_id,
+      </if>
+      <if test="taskTitle != null">
+        task_title,
+      </if>
+      <if test="taskStatus != null">
+        task_status,
+      </if>
+      <if test="taskGrouping != null">
+        task_grouping,
+      </if>
+      <if test="sourceFile != null">
+        source_file,
+      </if>
+      <if test="translateFile != null">
+        translate_file,
+      </if>
+      <if test="taskDeadline != null">
+        task_deadline,
+      </if>
+      <if test="taskType != null">
+        task_type,
+      </if>
+      <if test="taskSchedule != null">
+        task_schedule,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="updatedTime != null">
+        updated_time,
+      </if>
+      <if test="taskDetails != null">
+        task_details,
+      </if>
+      <if test="taskTranslate != null">
+        task_translate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="teamId != null">
+        #{teamId,jdbcType=BIGINT},
+      </if>
+      <if test="taskTitle != null">
+        #{taskTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="taskStatus != null">
+        #{taskStatus,jdbcType=INTEGER},
+      </if>
+      <if test="taskGrouping != null">
+        #{taskGrouping,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceFile != null">
+        #{sourceFile,jdbcType=VARCHAR},
+      </if>
+      <if test="translateFile != null">
+        #{translateFile,jdbcType=VARCHAR},
+      </if>
+      <if test="taskDeadline != null">
+        #{taskDeadline,jdbcType=DATE},
+      </if>
+      <if test="taskType != null">
+        #{taskType,jdbcType=INTEGER},
+      </if>
+      <if test="taskSchedule != null">
+        #{taskSchedule,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null">
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskDetails != null">
+        #{taskDetails,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="taskTranslate != null">
+        #{taskTranslate,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hzu.translate.entity.TaskWithBLOBs">
+    update trans_task
+    <set>
+      <if test="teamId != null">
+        team_id = #{teamId,jdbcType=BIGINT},
+      </if>
+      <if test="taskTitle != null">
+        task_title = #{taskTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="taskStatus != null">
+        task_status = #{taskStatus,jdbcType=INTEGER},
+      </if>
+      <if test="taskGrouping != null">
+        task_grouping = #{taskGrouping,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceFile != null">
+        source_file = #{sourceFile,jdbcType=VARCHAR},
+      </if>
+      <if test="translateFile != null">
+        translate_file = #{translateFile,jdbcType=VARCHAR},
+      </if>
+      <if test="taskDeadline != null">
+        task_deadline = #{taskDeadline,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskType != null">
+        task_type = #{taskType,jdbcType=INTEGER},
+      </if>
+      <if test="taskSchedule != null">
+        task_schedule = #{taskSchedule,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null">
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskDetails != null">
+        task_details = #{taskDetails,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="taskTranslate != null">
+        task_translate = #{taskTranslate,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hzu.translate.entity.TaskWithBLOBs">
+    update trans_task
+    set team_id = #{teamId,jdbcType=BIGINT},
+      task_title = #{taskTitle,jdbcType=VARCHAR},
+      task_status = #{taskStatus,jdbcType=INTEGER},
+      task_grouping = #{taskGrouping,jdbcType=VARCHAR},
+      source_file = #{sourceFile,jdbcType=VARCHAR},
+      translate_file = #{translateFile,jdbcType=VARCHAR},
+      task_deadline = #{taskDeadline,jdbcType=TIMESTAMP},
+      task_type = #{taskType,jdbcType=INTEGER},
+      task_schedule = #{taskSchedule,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      task_details = #{taskDetails,jdbcType=LONGVARCHAR},
+      task_translate = #{taskTranslate,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hzu.translate.entity.Task">
+    update trans_task
+    set team_id = #{teamId,jdbcType=BIGINT},
+      task_title = #{taskTitle,jdbcType=VARCHAR},
+      task_status = #{taskStatus,jdbcType=INTEGER},
+      task_grouping = #{taskGrouping,jdbcType=VARCHAR},
+      source_file = #{sourceFile,jdbcType=VARCHAR},
+      translate_file = #{translateFile,jdbcType=VARCHAR},
+      task_deadline = #{taskDeadline,jdbcType=TIMESTAMP},
+      task_type = #{taskType,jdbcType=INTEGER},
+      task_schedule = #{taskSchedule,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
