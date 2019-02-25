@@ -1,6 +1,7 @@
 package com.hzu.translate.dao;
 
 import com.hzu.translate.entity.RewardUser;
+import com.hzu.translate.vo.RewardTranslationVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -26,4 +27,5 @@ public interface RewardUserMapper {
 
     int updateSelective(RewardUser record);
 
+    List<RewardTranslationVo> selectRewardTranslation( Long rewardId);
 }

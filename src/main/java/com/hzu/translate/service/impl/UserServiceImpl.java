@@ -31,23 +31,30 @@ public class UserServiceImpl implements UserService {
         if(userId == null){
             return new Result(false,StatusCode.ERROR,"查找失败");
         }
-
         return new Result(true,StatusCode.OK,"查询成功",getUserRewardVo(userId,type));
+    }
+
+    @Override
+    public Result findFavouritesReward(Long userId) {
+        if(userId == null){
+            return new Result(false,StatusCode.ERROR,"查找失败");
+        }
+        return new Result(true,StatusCode.OK,"查询成功",getUserRewardVo(userId,2));
     }
 
 
     /**
      * 封装UserRewardVo
      * @param userId
-     * @param type 0为用户参加的，1为用户发起的
+     * @param type 0为用户参加的，1为用户发起的,2为用户关注
      * @return
      */
     private List<UserRewardVo> getUserRewardVo(Long userId, Integer type){
         List<UserRewardVo> userRewardVoList = new ArrayList<>();
         List<Reward> rewardList =null;
-        if(type == 0){
+        if(type == 0 || type == 2){
             rewardList = rewardMapper.findAll(userId);
-        }else{
+        }else if(type ==1){
             rewardList = rewardMapper.findRewardByUserId(userId);
         }
         if(CollectionUtils.isNotEmpty(rewardList)){
@@ -73,10 +80,13 @@ public class UserServiceImpl implements UserService {
                 if(CollectionUtils.isNotEmpty(rewardUserList)){
                     for(RewardUser rewardUser : rewardUserList){
                         Integer isGet = rewardUser.getIsGet();
+                        Integer isAttention = rewardUser.getIsAttention();
                         if(reward.getId() == rewardUser.getRewardId()){
                             userRewardVo.setIsAttention(rewardUser.getIsAttention());
                             userRewardVo.setIsGet(rewardUser.getIsGet());
                             if(isGet ==1 && type ==0){//如果是用户已领取的则添加进去
+                                userRewardVoList.add(userRewardVo);
+                            }else if(isAttention == 1&& type == 2){//用户关注的
                                 userRewardVoList.add(userRewardVo);
                             }
                         }

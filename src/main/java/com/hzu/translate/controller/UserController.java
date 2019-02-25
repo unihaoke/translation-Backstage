@@ -16,9 +16,13 @@ public class UserController {
     private UserService userService;
 
     //type 0为用户参加的，1为用户发起的
-    @GetMapping(value = "/{userId}/{type}")
+    @GetMapping(value = "/translations/{userId}/{type}")
     public Result findUserReward(@PathVariable Long userId,@PathVariable Integer type){
         return userService.findUserReward(userId,type);
     }
 
+    @GetMapping(value = "/favourites/{userId}")
+    public Result findFavouritesReward(@PathVariable Long userId){
+        return userService.findFavouritesReward(userId);
+    }
 }

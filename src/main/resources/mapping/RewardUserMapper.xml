@@ -11,6 +11,17 @@
       <arg column="translation_file" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
+
+
+  <resultMap id="RewardTranslationResultMap" type="com.hzu.translate.vo.RewardTranslationVo">
+    <result column="user_id" javaType="java.lang.Long" jdbcType="BIGINT" property="userId"/>
+    <result column="reward_id" javaType="java.lang.Long" jdbcType="BIGINT" property="rewardId" />
+    <result column="user_name" javaType="java.lang.String" jdbcType="VARCHAR" property="userName" />
+    <result column="translation_file" javaType="java.lang.String" jdbcType="VARCHAR" property="translationFile" />
+    <result column="translation" javaType="java.lang.String" jdbcType="LONGVARCHAR"  property="translation"/>
+  </resultMap>
+
+
   <resultMap id="ResultMapWithBLOBs" type="com.hzu.translate.entity.RewardUser">
     <constructor>
       <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
@@ -178,4 +189,9 @@
     WHERE user_id = #{userId,jdbcType=BIGINT} AND reward_id = #{rewardId,jdbcType=BIGINT}
   </update>
 
+  <select id="selectRewardTranslation" parameterType="long" resultMap="RewardTranslationResultMap">
+    SELECT r.user_id, r.reward_id,u.user_name,r.translation_file,r.translation
+    FROM trans_user u,trans_reward_user r
+    WHERE u.id = r.user_id AND reward_id = #{rewardId,jdbcType=BIGINT}
+  </select>
 </mapper>
