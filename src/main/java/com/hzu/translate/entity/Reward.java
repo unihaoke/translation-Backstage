@@ -2,13 +2,12 @@ package com.hzu.translate.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Reward implements Serializable {
+public class Reward {
     private Long id;
 
-    private Long userId;
+    private String userId;
 
     private Integer rewardStatus;
 
@@ -16,7 +15,7 @@ public class Reward implements Serializable {
 
     private Integer rewardExperience;
 
-    private Long categoryId;
+    private Integer totalAttention;
 
     private Integer rewardType;
 
@@ -35,13 +34,13 @@ public class Reward implements Serializable {
 
     private String rewardInformation;
 
-    public Reward(Long id, Long userId, Integer rewardStatus, String rewardSchedule, Integer rewardExperience, Long categoryId, Integer rewardType, Integer rewardMoney, String uploadFile, Date deadline, Date createdTime, Date updatedTime) {
+    public Reward(Long id, String userId, Integer rewardStatus, String rewardSchedule, Integer rewardExperience, Integer totalAttention, Integer rewardType, Integer rewardMoney, String uploadFile, Date deadline, Date createdTime, Date updatedTime) {
         this.id = id;
         this.userId = userId;
         this.rewardStatus = rewardStatus;
         this.rewardSchedule = rewardSchedule;
         this.rewardExperience = rewardExperience;
-        this.categoryId = categoryId;
+        this.totalAttention = totalAttention;
         this.rewardType = rewardType;
         this.rewardMoney = rewardMoney;
         this.uploadFile = uploadFile;
@@ -50,13 +49,13 @@ public class Reward implements Serializable {
         this.updatedTime = updatedTime;
     }
 
-    public Reward(Long id, Long userId, Integer rewardStatus, String rewardSchedule, Integer rewardExperience, Long categoryId, Integer rewardType, Integer rewardMoney, String uploadFile, Date deadline, Date createdTime, Date updatedTime, String rewardInformation) {
+    public Reward(Long id, String userId, Integer rewardStatus, String rewardSchedule, Integer rewardExperience, Integer totalAttention, Integer rewardType, Integer rewardMoney, String uploadFile, Date deadline, Date createdTime, Date updatedTime, String rewardInformation) {
         this.id = id;
         this.userId = userId;
         this.rewardStatus = rewardStatus;
         this.rewardSchedule = rewardSchedule;
         this.rewardExperience = rewardExperience;
-        this.categoryId = categoryId;
+        this.totalAttention = totalAttention;
         this.rewardType = rewardType;
         this.rewardMoney = rewardMoney;
         this.uploadFile = uploadFile;
@@ -78,12 +77,12 @@ public class Reward implements Serializable {
         this.id = id;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
     }
 
     public Integer getRewardStatus() {
@@ -110,12 +109,12 @@ public class Reward implements Serializable {
         this.rewardExperience = rewardExperience;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public Integer getTotalAttention() {
+        return totalAttention;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setTotalAttention(Integer totalAttention) {
+        this.totalAttention = totalAttention;
     }
 
     public Integer getRewardType() {

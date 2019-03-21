@@ -1,7 +1,7 @@
 package com.hzu.translate.vo;
 
 public class RewardTranslationVo {
-    private Long userId;
+    private String userId;
 
     private Long rewardId;
 
@@ -12,11 +12,11 @@ public class RewardTranslationVo {
     private String translation;
 
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

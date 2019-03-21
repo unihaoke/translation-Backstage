@@ -29,7 +29,7 @@ public class RewardServiceImpl implements RewardService {
     private RewardUserMapper rewardUserMapper;
 
     @Override
-    public Result findAll(Long userId) {
+    public Result findAll(String userId) {
         if(userId == null){
             return new Result(false,StatusCode.ERROR,"查找失败");
         }
@@ -41,25 +41,14 @@ public class RewardServiceImpl implements RewardService {
         if(rewardUser == null){
             return new Result(false,StatusCode.ERROR,"更新失败");
         }
-        Long userId = rewardUser.getUserId();
-        Long rewardId = rewardUser.getRewardId();
-//        Long id = rewardUserMapper.selectByUserIdAndRewardId(userId,rewardId);
-//        if(id!=null){//说明有该记录
-//            //选择性更新
-//            rewardUser.setId(id);
-//            int rowCount = rewardUserMapper.updateByPrimaryKeySelective(rewardUser);
-//            if(rowCount >0){
-//                return new Result(true,StatusCode.OK,"更新成功");
-//            }else{
-//                return new Result(false,StatusCode.ERROR,"更新失败");
-//            }
-//        }
-        int rowCount = rewardUserMapper.updateSelective(rewardUser);
+        int sCount = rewardUserMapper.selectGetNumber(rewardUser.getRewardId());
+        if(sCount > 2){
+            return new Result(false,StatusCode.ERROR,"悬赏已被接完");
+        }
+        int rowCount = rewardUserMapper.updateByPrimaryKeySelective(rewardUser);
         if(rowCount >0){
                 return new Result(true,StatusCode.OK,"更新成功");
             }
-        //除去id
-        rewardUser.setId(null);
         int count = rewardUserMapper.insert(rewardUser);
         if(count > 0){
             return new Result(true,StatusCode.OK,"添加成功");
@@ -72,7 +61,8 @@ public class RewardServiceImpl implements RewardService {
         if(rewardUser == null){
             return new Result(false,StatusCode.ERROR,"提交失败");
         }
-        int rowCount = rewardUserMapper.updateSelective(rewardUser);
+        rewardUser.setIsSubmission(1);
+        int rowCount = rewardUserMapper.updateByPrimaryKeySelective(rewardUser);
         if(rowCount >0){
             return new Result(true,StatusCode.OK,"提交成功");
         }
@@ -88,7 +78,7 @@ public class RewardServiceImpl implements RewardService {
     }
 
     @Override
-    public Result findRewardByType(Long userId, Long type) {//type类型1为免费，2为收费，3为计算机，4为金融，5为体育
+    public Result findRewardByType(String userId, Long type) {//type类型-1为免费，0为收费，1为计算机，2为金融，3为体育
         if(userId == null ){
             return new Result(false,StatusCode.ERROR,"查找失败");
         }
@@ -99,27 +89,34 @@ public class RewardServiceImpl implements RewardService {
 
 
 
+
+
+
+
     /**
      * 封装UserRewardVo
      * @param userId
      * @return
      */
-    private List<UserRewardVo> getUserRewardVo(Long userId,Long type){
+    private List<UserRewardVo> getUserRewardVo(String userId,Long type){
         List<UserRewardVo> userRewardVoList = new ArrayList<>();
         List<Reward> rewardList =null;
         if(type == null){
-            rewardList = rewardMapper.findAll(userId);
+            rewardList = rewardMapper.findAll();
+        }else if(type.intValue() == -1){
+            rewardList = rewardMapper.findRewardByFreeMoney();
+        }else if(type.intValue() == 0){
+            rewardList = rewardMapper.findRewardByMoney();
         }else{
-            rewardList = rewardMapper.findRewardByType(userId,type);
+            rewardList = rewardMapper.findRewardByType(type);
         }
         if(CollectionUtils.isNotEmpty(rewardList)){
             for (Reward reward :rewardList){
                 UserRewardVo userRewardVo = new UserRewardVo();
-                userRewardVo.setId(reward.getId());
-                userRewardVo.setCategoryId(reward.getCategoryId());
                 userRewardVo.setDeadline(reward.getDeadline());
                 userRewardVo.setRewardId(reward.getId());
                 userRewardVo.setUserId(reward.getUserId());
+                userRewardVo.setTotal_attention(reward.getTotalAttention());
                 userRewardVo.setRewardExperience(reward.getRewardExperience());
                 userRewardVo.setRewardInformation(reward.getRewardInformation());
                 userRewardVo.setRewardMoney(reward.getRewardMoney());

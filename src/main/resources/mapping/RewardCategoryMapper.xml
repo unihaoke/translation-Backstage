@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.hzu.translate.entity.RewardCategory">
     <constructor>
       <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="reward_id" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="category_name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="parent_id" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
@@ -13,7 +14,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, category_name, parent_id, status, sort_order, created_time, updated_time
+    id, reward_id, category_name, parent_id, status, sort_order, created_time, updated_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -26,18 +27,21 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.hzu.translate.entity.RewardCategory">
-    insert into trans_reward_category (id, category_name, parent_id, 
-      status, sort_order, created_time, 
-      updated_time)
-    values (#{id,jdbcType=BIGINT}, #{categoryName,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}, 
-      #{status,jdbcType=INTEGER}, #{sortOrder,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, 
-      #{updatedTime,jdbcType=TIMESTAMP})
+    insert into trans_reward_category (id, reward_id, category_name, 
+      parent_id, status, sort_order, 
+      created_time, updated_time)
+    values (#{id,jdbcType=BIGINT}, #{rewardId,jdbcType=BIGINT}, #{categoryName,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{sortOrder,jdbcType=INTEGER}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.hzu.translate.entity.RewardCategory">
     insert into trans_reward_category
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="rewardId != null">
+        reward_id,
       </if>
       <if test="categoryName != null">
         category_name,
@@ -62,6 +66,9 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
+      <if test="rewardId != null">
+        #{rewardId,jdbcType=BIGINT},
+      </if>
       <if test="categoryName != null">
         #{categoryName,jdbcType=VARCHAR},
       </if>
@@ -85,6 +92,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.hzu.translate.entity.RewardCategory">
     update trans_reward_category
     <set>
+      <if test="rewardId != null">
+        reward_id = #{rewardId,jdbcType=BIGINT},
+      </if>
       <if test="categoryName != null">
         category_name = #{categoryName,jdbcType=VARCHAR},
       </if>
@@ -108,7 +118,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hzu.translate.entity.RewardCategory">
     update trans_reward_category
-    set category_name = #{categoryName,jdbcType=VARCHAR},
+    set reward_id = #{rewardId,jdbcType=BIGINT},
+      category_name = #{categoryName,jdbcType=VARCHAR},
       parent_id = #{parentId,jdbcType=BIGINT},
       status = #{status,jdbcType=INTEGER},
       sort_order = #{sortOrder,jdbcType=INTEGER},

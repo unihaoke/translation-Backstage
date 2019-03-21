@@ -3,18 +3,32 @@
 <mapper namespace="com.hzu.translate.dao.RewardUserMapper">
   <resultMap id="BaseResultMap" type="com.hzu.translate.entity.RewardUser">
     <constructor>
-      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="user_id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="reward_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <idArg column="user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <idArg column="reward_id" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="is_get" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="is_attention" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="is_adopt" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="is_Submission" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="sort_order" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="translation_file" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
-
+  <resultMap id="ResultMapWithBLOBs" type="com.hzu.translate.entity.RewardUser">
+    <constructor>
+      <idArg column="user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <idArg column="reward_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="is_get" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="is_attention" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="is_adopt" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="is_Submission" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="sort_order" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="translation_file" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="translation" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+    </constructor>
+  </resultMap>
 
   <resultMap id="RewardTranslationResultMap" type="com.hzu.translate.vo.RewardTranslationVo">
-    <result column="user_id" javaType="java.lang.Long" jdbcType="BIGINT" property="userId"/>
+    <result column="user_id" javaType="java.lang.String" jdbcType="VARCHAR" property="userId"/>
     <result column="reward_id" javaType="java.lang.Long" jdbcType="BIGINT" property="rewardId" />
     <result column="user_name" javaType="java.lang.String" jdbcType="VARCHAR" property="userName" />
     <result column="translation_file" javaType="java.lang.String" jdbcType="VARCHAR" property="translationFile" />
@@ -22,49 +36,39 @@
   </resultMap>
 
 
-  <resultMap id="ResultMapWithBLOBs" type="com.hzu.translate.entity.RewardUser">
-    <constructor>
-      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="user_id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="reward_id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="is_get" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="is_attention" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="translation_file" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="translation" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
-    </constructor>
-  </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, reward_id, is_get, is_attention, translation_file
+    user_id, reward_id, is_get, is_attention, is_adopt, is_Submission, sort_order, translation_file
   </sql>
   <sql id="Blob_Column_List">
     translation
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="com.hzu.translate.entity.RewardUserKey" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from trans_reward_user
-    where id = #{id,jdbcType=BIGINT}
+    where user_id = #{userId,jdbcType=VARCHAR}
+      and reward_id = #{rewardId,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <delete id="deleteByPrimaryKey" parameterType="com.hzu.translate.entity.RewardUserKey">
     delete from trans_reward_user
-    where id = #{id,jdbcType=BIGINT}
+    where user_id = #{userId,jdbcType=VARCHAR}
+      and reward_id = #{rewardId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.hzu.translate.entity.RewardUser">
-    insert into trans_reward_user (id, user_id, reward_id, 
-      is_get, is_attention, translation_file, 
-      translation)
-    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{rewardId,jdbcType=BIGINT}, 
-      #{isGet,jdbcType=INTEGER}, #{isAttention,jdbcType=INTEGER}, #{translationFile,jdbcType=VARCHAR}, 
-      #{translation,jdbcType=LONGVARCHAR})
+    insert into trans_reward_user (user_id, reward_id, is_get, 
+      is_attention, is_adopt, is_Submission, 
+      sort_order, translation_file, translation
+      )
+    values (#{userId,jdbcType=VARCHAR}, #{rewardId,jdbcType=BIGINT}, #{isGet,jdbcType=INTEGER},
+      #{isAttention,jdbcType=INTEGER}, #{isAdopt,jdbcType=INTEGER}, #{isSubmission,jdbcType=INTEGER}, 
+      #{sortOrder,jdbcType=INTEGER}, #{translationFile,jdbcType=VARCHAR}, #{translation,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.hzu.translate.entity.RewardUser">
     insert into trans_reward_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="userId != null">
         user_id,
       </if>
@@ -77,6 +81,15 @@
       <if test="isAttention != null">
         is_attention,
       </if>
+      <if test="isAdopt != null">
+        is_adopt,
+      </if>
+      <if test="isSubmission != null">
+        is_Submission,
+      </if>
+      <if test="sortOrder != null">
+        sort_order,
+      </if>
       <if test="translationFile != null">
         translation_file,
       </if>
@@ -85,11 +98,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
       <if test="userId != null">
-        #{userId,jdbcType=BIGINT},
+        #{userId,jdbcType=VARCHAR},
       </if>
       <if test="rewardId != null">
         #{rewardId,jdbcType=BIGINT},
@@ -99,6 +109,15 @@
       </if>
       <if test="isAttention != null">
         #{isAttention,jdbcType=INTEGER},
+      </if>
+      <if test="isAdopt != null">
+        #{isAdopt,jdbcType=INTEGER},
+      </if>
+      <if test="isSubmission != null">
+        #{isSubmission,jdbcType=INTEGER},
+      </if>
+      <if test="sortOrder != null">
+        #{sortOrder,jdbcType=INTEGER},
       </if>
       <if test="translationFile != null">
         #{translationFile,jdbcType=VARCHAR},
@@ -111,17 +130,20 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.hzu.translate.entity.RewardUser">
     update trans_reward_user
     <set>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=BIGINT},
-      </if>
-      <if test="rewardId != null">
-        reward_id = #{rewardId,jdbcType=BIGINT},
-      </if>
       <if test="isGet != null">
         is_get = #{isGet,jdbcType=INTEGER},
       </if>
       <if test="isAttention != null">
         is_attention = #{isAttention,jdbcType=INTEGER},
+      </if>
+      <if test="isAdopt != null">
+        is_adopt = #{isAdopt,jdbcType=INTEGER},
+      </if>
+      <if test="isSubmission != null">
+        is_Submission = #{isSubmission,jdbcType=INTEGER},
+      </if>
+      <if test="sortOrder != null">
+        sort_order = #{sortOrder,jdbcType=INTEGER},
       </if>
       <if test="translationFile != null">
         translation_file = #{translationFile,jdbcType=VARCHAR},
@@ -130,68 +152,50 @@
         translation = #{translation,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    where user_id = #{userId,jdbcType=VARCHAR}
+      and reward_id = #{rewardId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hzu.translate.entity.RewardUser">
     update trans_reward_user
-    set user_id = #{userId,jdbcType=BIGINT},
-      reward_id = #{rewardId,jdbcType=BIGINT},
-      is_get = #{isGet,jdbcType=INTEGER},
+    set is_get = #{isGet,jdbcType=INTEGER},
       is_attention = #{isAttention,jdbcType=INTEGER},
+      is_adopt = #{isAdopt,jdbcType=INTEGER},
+      is_Submission = #{isSubmission,jdbcType=INTEGER},
+      sort_order = #{sortOrder,jdbcType=INTEGER},
       translation_file = #{translationFile,jdbcType=VARCHAR},
       translation = #{translation,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=BIGINT}
+    where user_id = #{userId,jdbcType=VARCHAR}
+      and reward_id = #{rewardId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hzu.translate.entity.RewardUser">
     update trans_reward_user
-    set user_id = #{userId,jdbcType=BIGINT},
-      reward_id = #{rewardId,jdbcType=BIGINT},
-      is_get = #{isGet,jdbcType=INTEGER},
+    set is_get = #{isGet,jdbcType=INTEGER},
       is_attention = #{isAttention,jdbcType=INTEGER},
+      is_adopt = #{isAdopt,jdbcType=INTEGER},
+      is_Submission = #{isSubmission,jdbcType=INTEGER},
+      sort_order = #{sortOrder,jdbcType=INTEGER},
       translation_file = #{translationFile,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=BIGINT}
+    where user_id = #{userId,jdbcType=VARCHAR}
+      and reward_id = #{rewardId,jdbcType=BIGINT}
   </update>
-  <select id="findRewardUserById" parameterType="long" resultMap="ResultMapWithBLOBs">
-    SELECT
+  <select id="findRewardUserById" parameterType="String" resultMap="ResultMapWithBLOBs">
+    select
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from trans_reward_user
-    where user_id = #{userId,jdbcType=BIGINT}
+    where user_id = #{userId,jdbcType=VARCHAR}
   </select>
-  <select id="selectByUserIdAndRewardId" parameterType="map" resultType="long">
-    SELECT id
-    FROM trans_reward_user
-    WHERE user_id = #{userId,jdbcType=BIGINT} AND reward_id = #{rewardId,jdbcType=BIGINT}
-  </select>
-  <update id="updateSelective" parameterType="com.hzu.translate.entity.RewardUser">
-    update trans_reward_user
-    <set>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=BIGINT},
-      </if>
-      <if test="rewardId != null">
-        reward_id = #{rewardId,jdbcType=BIGINT},
-      </if>
-      <if test="isGet != null">
-        is_get = #{isGet,jdbcType=INTEGER},
-      </if>
-      <if test="isAttention != null">
-        is_attention = #{isAttention,jdbcType=INTEGER},
-      </if>
-      <if test="translationFile != null">
-        translation_file = #{translationFile,jdbcType=VARCHAR},
-      </if>
-      <if test="translation != null">
-        translation = #{translation,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    WHERE user_id = #{userId,jdbcType=BIGINT} AND reward_id = #{rewardId,jdbcType=BIGINT}
-  </update>
 
   <select id="selectRewardTranslation" parameterType="long" resultMap="RewardTranslationResultMap">
     SELECT r.user_id, r.reward_id,u.user_name,r.translation_file,r.translation
     FROM trans_user u,trans_reward_user r
-    WHERE u.id = r.user_id AND reward_id = #{rewardId,jdbcType=BIGINT}
+    WHERE u.id = r.user_id AND r.reward_id = #{rewardId,jdbcType=BIGINT} AND r.is_Submission = 1
+  </select>
+
+  <select id="selectGetNumber" parameterType="long" resultType="int">
+    SELECT count(1)
+    FROM trans_reward_user
+    WHERE reward_id = #{rewardId,jdbcType=BIGINT}
   </select>
 </mapper>

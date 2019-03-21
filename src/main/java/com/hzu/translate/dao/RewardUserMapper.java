@@ -1,19 +1,19 @@
 package com.hzu.translate.dao;
 
 import com.hzu.translate.entity.RewardUser;
+import com.hzu.translate.entity.RewardUserKey;
 import com.hzu.translate.vo.RewardTranslationVo;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface RewardUserMapper {
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(RewardUserKey key);
 
     int insert(RewardUser record);
 
     int insertSelective(RewardUser record);
 
-    RewardUser selectByPrimaryKey(Long id);
+    RewardUser selectByPrimaryKey(RewardUserKey key);
 
     int updateByPrimaryKeySelective(RewardUser record);
 
@@ -21,11 +21,9 @@ public interface RewardUserMapper {
 
     int updateByPrimaryKey(RewardUser record);
 
-    List<RewardUser> findRewardUserById(Long userId);
+    List<RewardUser> findRewardUserById(String userId);
 
-    Long selectByUserIdAndRewardId(@Param("userId")Long userId,@Param("rewardId") Long rewardId);
+    List<RewardTranslationVo> selectRewardTranslation(Long rewardId);
 
-    int updateSelective(RewardUser record);
-
-    List<RewardTranslationVo> selectRewardTranslation( Long rewardId);
+    int selectGetNumber(Long rewardId);
 }

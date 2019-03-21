@@ -1,14 +1,11 @@
 package com.hzu.translate.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.io.Serializable;
 import java.util.Date;
 
-public class Team implements Serializable {
+public class Team {
     private Long id;
 
-    private Long userId;
+    private String userId;
 
     private String teamName;
 
@@ -18,32 +15,34 @@ public class Team implements Serializable {
 
     private String teamPic;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
+    private Integer sortOrder;
+
     private Date createdTime;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date updatedTime;
 
     private String teamDescribe;
 
-    public Team(Long id, Long userId, String teamName, Integer memberQuantity, String organization, String teamPic, Date createdTime, Date updatedTime) {
+    public Team(Long id, String userId, String teamName, Integer memberQuantity, String organization, String teamPic, Integer sortOrder, Date createdTime, Date updatedTime) {
         this.id = id;
         this.userId = userId;
         this.teamName = teamName;
         this.memberQuantity = memberQuantity;
         this.organization = organization;
         this.teamPic = teamPic;
+        this.sortOrder = sortOrder;
         this.createdTime = createdTime;
         this.updatedTime = updatedTime;
     }
 
-    public Team(Long id, Long userId, String teamName, Integer memberQuantity, String organization, String teamPic, Date createdTime, Date updatedTime, String teamDescribe) {
+    public Team(Long id, String userId, String teamName, Integer memberQuantity, String organization, String teamPic, Integer sortOrder, Date createdTime, Date updatedTime, String teamDescribe) {
         this.id = id;
         this.userId = userId;
         this.teamName = teamName;
         this.memberQuantity = memberQuantity;
         this.organization = organization;
         this.teamPic = teamPic;
+        this.sortOrder = sortOrder;
         this.createdTime = createdTime;
         this.updatedTime = updatedTime;
         this.teamDescribe = teamDescribe;
@@ -61,12 +60,12 @@ public class Team implements Serializable {
         this.id = id;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
     }
 
     public String getTeamName() {
@@ -99,6 +98,14 @@ public class Team implements Serializable {
 
     public void setTeamPic(String teamPic) {
         this.teamPic = teamPic == null ? null : teamPic.trim();
+    }
+
+    public Integer getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
     }
 
     public Date getCreatedTime() {

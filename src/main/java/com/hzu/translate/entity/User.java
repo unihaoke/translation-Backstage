@@ -1,12 +1,9 @@
 package com.hzu.translate.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.io.Serializable;
 import java.util.Date;
 
-public class User implements Serializable {
-    private Long id;
+public class User {
+    private String id;
 
     private String userName;
 
@@ -18,13 +15,11 @@ public class User implements Serializable {
 
     private Long currentExperience;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date updatedTime;
 
-    public User(Long id, String userName, String email, String profession, String userLevel, Long currentExperience, Date createdTime, Date updatedTime) {
+    public User(String id, String userName, String email, String profession, String userLevel, Long currentExperience, Date createdTime, Date updatedTime) {
         this.id = id;
         this.userName = userName;
         this.email = email;
@@ -39,12 +34,12 @@ public class User implements Serializable {
         super();
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     public String getUserName() {

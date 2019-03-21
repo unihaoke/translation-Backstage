@@ -4,15 +4,15 @@
   <resultMap id="BaseResultMap" type="com.hzu.translate.entity.Reward">
     <constructor>
       <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="user_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="reward_status" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="reward_schedule" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="reward_experience" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="category_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="total_attention" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="reward_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="reward_money" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="upload_file" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="deadline" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="deadline" javaType="java.util.Date" jdbcType="DATE" />
       <arg column="created_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="updated_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
@@ -20,23 +20,23 @@
   <resultMap id="ResultMapWithBLOBs" type="com.hzu.translate.entity.Reward">
     <constructor>
       <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="user_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="reward_status" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="reward_schedule" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="reward_experience" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="category_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="total_attention" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="reward_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="reward_money" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="upload_file" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="deadline" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="deadline" javaType="java.util.Date" jdbcType="DATE" />
       <arg column="created_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="updated_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="reward_information" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, reward_status, reward_schedule, reward_experience, category_id, reward_type, 
-    reward_money, upload_file, deadline, created_time, updated_time
+    id, user_id, reward_status, reward_schedule, reward_experience, total_attention, 
+    reward_type, reward_money, upload_file, deadline, created_time, updated_time
   </sql>
   <sql id="Blob_Column_List">
     reward_information
@@ -55,14 +55,14 @@
   </delete>
   <insert id="insert" parameterType="com.hzu.translate.entity.Reward">
     insert into trans_reward (id, user_id, reward_status, 
-      reward_schedule, reward_experience, category_id, 
+      reward_schedule, reward_experience, total_attention, 
       reward_type, reward_money, upload_file, 
       deadline, created_time, updated_time, 
       reward_information)
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{rewardStatus,jdbcType=INTEGER}, 
-      #{rewardSchedule,jdbcType=VARCHAR}, #{rewardExperience,jdbcType=INTEGER}, #{categoryId,jdbcType=BIGINT}, 
+      #{rewardSchedule,jdbcType=VARCHAR}, #{rewardExperience,jdbcType=INTEGER}, 0,
       #{rewardType,jdbcType=INTEGER}, #{rewardMoney,jdbcType=INTEGER}, #{uploadFile,jdbcType=VARCHAR}, 
-      #{deadline,jdbcType=TIMESTAMP}, now(), now(),
+      #{deadline,jdbcType=DATE}, now(), now(),
       #{rewardInformation,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hzu.translate.entity.Reward">
@@ -83,8 +83,8 @@
       <if test="rewardExperience != null">
         reward_experience,
       </if>
-      <if test="categoryId != null">
-        category_id,
+      <if test="totalAttention != null">
+        total_attention,
       </if>
       <if test="rewardType != null">
         reward_type,
@@ -124,8 +124,8 @@
       <if test="rewardExperience != null">
         #{rewardExperience,jdbcType=INTEGER},
       </if>
-      <if test="categoryId != null">
-        #{categoryId,jdbcType=BIGINT},
+      <if test="totalAttention != null">
+        #{totalAttention,jdbcType=INTEGER},
       </if>
       <if test="rewardType != null">
         #{rewardType,jdbcType=INTEGER},
@@ -137,7 +137,7 @@
         #{uploadFile,jdbcType=VARCHAR},
       </if>
       <if test="deadline != null">
-        #{deadline,jdbcType=TIMESTAMP},
+        #{deadline,jdbcType=DATE},
       </if>
       <if test="createdTime != null">
         #{createdTime,jdbcType=TIMESTAMP},
@@ -165,8 +165,8 @@
       <if test="rewardExperience != null">
         reward_experience = #{rewardExperience,jdbcType=INTEGER},
       </if>
-      <if test="categoryId != null">
-        category_id = #{categoryId,jdbcType=BIGINT},
+      <if test="totalAttention != null">
+        total_attention = #{totalAttention,jdbcType=INTEGER},
       </if>
       <if test="rewardType != null">
         reward_type = #{rewardType,jdbcType=INTEGER},
@@ -178,13 +178,13 @@
         upload_file = #{uploadFile,jdbcType=VARCHAR},
       </if>
       <if test="deadline != null">
-        deadline = #{deadline,jdbcType=TIMESTAMP},
+        deadline = #{deadline,jdbcType=DATE},
       </if>
       <if test="createdTime != null">
         created_time = #{createdTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updatedTime != null">
-        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+        updated_time = now(),
       </if>
       <if test="rewardInformation != null">
         reward_information = #{rewardInformation,jdbcType=LONGVARCHAR},
@@ -198,13 +198,13 @@
       reward_status = #{rewardStatus,jdbcType=INTEGER},
       reward_schedule = #{rewardSchedule,jdbcType=VARCHAR},
       reward_experience = #{rewardExperience,jdbcType=INTEGER},
-      category_id = #{categoryId,jdbcType=BIGINT},
+      total_attention = #{totalAttention,jdbcType=INTEGER},
       reward_type = #{rewardType,jdbcType=INTEGER},
       reward_money = #{rewardMoney,jdbcType=INTEGER},
       upload_file = #{uploadFile,jdbcType=VARCHAR},
-      deadline = #{deadline,jdbcType=TIMESTAMP},
+      deadline = #{deadline,jdbcType=DATE},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
-      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      updated_time = now(),
       reward_information = #{rewardInformation,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -214,39 +214,47 @@
       reward_status = #{rewardStatus,jdbcType=INTEGER},
       reward_schedule = #{rewardSchedule,jdbcType=VARCHAR},
       reward_experience = #{rewardExperience,jdbcType=INTEGER},
-      category_id = #{categoryId,jdbcType=BIGINT},
+      total_attention = #{totalAttention,jdbcType=INTEGER},
       reward_type = #{rewardType,jdbcType=INTEGER},
       reward_money = #{rewardMoney,jdbcType=INTEGER},
       upload_file = #{uploadFile,jdbcType=VARCHAR},
-      deadline = #{deadline,jdbcType=TIMESTAMP},
+      deadline = #{deadline,jdbcType=DATE},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
-      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+      updated_time = now()
     where id = #{id,jdbcType=BIGINT}
   </update>
-
-  <select id="findAll" parameterType="long" resultMap="ResultMapWithBLOBs">
-    SELECT
-    <include refid="Base_Column_List"/>
+  <select id="findAll" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    FROM trans_reward
-    WHERE user_id != #{userId,jdbcType=BIGINT}
+    from trans_reward
     ORDER BY created_time DESC
   </select>
-
-  <select id="findRewardByType" parameterType="map" resultMap="ResultMapWithBLOBs">
-    SELECT
-    <include refid="Base_Column_List"/>
-    ,
-    <include refid="Blob_Column_List" />
+  <select id="findRewardByType" parameterType="long" resultMap="ResultMapWithBLOBs">
+    select  r.id, r.user_id, r.reward_status, r.reward_schedule, r.reward_experience, r.total_attention,
+    r.reward_type, r.reward_money, r.upload_file, r.deadline, r.created_time, r.updated_time,r.reward_information
+    FROM trans_reward r,trans_reward_category c
+    where c.parent_id = #{type,jdbcType=INTEGER} AND c.reward_id = r.id
+    ORDER BY r.created_time DESC
+  </select>
+  <select id="findRewardByFreeMoney"  resultMap="ResultMapWithBLOBs">
+    select  id, user_id, reward_status,reward_schedule, reward_experience, total_attention,
+    reward_type, reward_money,upload_file, deadline, created_time, updated_time,reward_information
     FROM trans_reward
-    WHERE user_id != #{userId,jdbcType=BIGINT} AND category_id = #{categoryId,jdbcType=BIGINT}
+    where  reward_money =0
     ORDER BY created_time DESC
   </select>
-
-  <select id="findRewardByUserId" parameterType="long" resultMap="ResultMapWithBLOBs">
-    SELECT
-    <include refid="Base_Column_List"/>
+  <select id="findRewardByMoney" resultMap="ResultMapWithBLOBs">
+    select  id, user_id, reward_status,reward_schedule, reward_experience, total_attention,
+    reward_type, reward_money,upload_file, deadline, created_time, updated_time,reward_information
+    FROM trans_reward
+    where  reward_money >0
+    ORDER BY created_time DESC
+  </select>
+  <select id="findRewardByUserId" parameterType="String" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     FROM trans_reward

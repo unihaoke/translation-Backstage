@@ -7,7 +7,7 @@ import com.hzu.translate.entity.RewardUser;
 
 public interface RewardService {
 
-    Result findAll(Long userId);
+    Result findAll(String userId);
 
     Result updateGetAndAttention(RewardUser rewardUser);
 
@@ -15,6 +15,6 @@ public interface RewardService {
 
     Result addReward(Reward reward);
 
-    Result findRewardByType(Long userId,Long type);
+    Result findRewardByType(String userId,Long type);
 
 }

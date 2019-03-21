@@ -4,11 +4,12 @@
   <resultMap id="BaseResultMap" type="com.hzu.translate.entity.Team">
     <constructor>
       <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="user_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="team_name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="member_quantity" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="organization" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="team_pic" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sort_order" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="created_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="updated_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
@@ -16,18 +17,20 @@
   <resultMap id="ResultMapWithBLOBs" type="com.hzu.translate.entity.Team">
     <constructor>
       <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="user_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="team_name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="member_quantity" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="organization" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="team_pic" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sort_order" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="created_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="updated_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="team_describe" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, team_name, member_quantity, organization, team_pic, created_time, updated_time
+    id, user_id, team_name, member_quantity, organization, team_pic, sort_order, created_time, 
+    updated_time
   </sql>
   <sql id="Blob_Column_List">
     team_describe
@@ -47,12 +50,12 @@
   <insert id="insert" parameterType="com.hzu.translate.entity.Team">
     insert into trans_team (id, user_id, team_name, 
       member_quantity, organization, team_pic, 
-      created_time, updated_time, team_describe
-      )
-    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{teamName,jdbcType=VARCHAR}, 
+      sort_order, created_time, updated_time, 
+      team_describe)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{teamName,jdbcType=VARCHAR}, 
       #{memberQuantity,jdbcType=INTEGER}, #{organization,jdbcType=VARCHAR}, #{teamPic,jdbcType=VARCHAR}, 
-      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, #{teamDescribe,jdbcType=LONGVARCHAR}
-      )
+      #{sortOrder,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, 
+      #{teamDescribe,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hzu.translate.entity.Team">
     insert into trans_team
@@ -75,6 +78,9 @@
       <if test="teamPic != null">
         team_pic,
       </if>
+      <if test="sortOrder != null">
+        sort_order,
+      </if>
       <if test="createdTime != null">
         created_time,
       </if>
@@ -90,7 +96,7 @@
         #{id,jdbcType=BIGINT},
       </if>
       <if test="userId != null">
-        #{userId,jdbcType=BIGINT},
+        #{userId,jdbcType=VARCHAR},
       </if>
       <if test="teamName != null">
         #{teamName,jdbcType=VARCHAR},
@@ -103,6 +109,9 @@
       </if>
       <if test="teamPic != null">
         #{teamPic,jdbcType=VARCHAR},
+      </if>
+      <if test="sortOrder != null">
+        #{sortOrder,jdbcType=INTEGER},
       </if>
       <if test="createdTime != null">
         #{createdTime,jdbcType=TIMESTAMP},
@@ -119,7 +128,7 @@
     update trans_team
     <set>
       <if test="userId != null">
-        user_id = #{userId,jdbcType=BIGINT},
+        user_id = #{userId,jdbcType=VARCHAR},
       </if>
       <if test="teamName != null">
         team_name = #{teamName,jdbcType=VARCHAR},
@@ -132,6 +141,9 @@
       </if>
       <if test="teamPic != null">
         team_pic = #{teamPic,jdbcType=VARCHAR},
+      </if>
+      <if test="sortOrder != null">
+        sort_order = #{sortOrder,jdbcType=INTEGER},
       </if>
       <if test="createdTime != null">
         created_time = #{createdTime,jdbcType=TIMESTAMP},
@@ -147,11 +159,12 @@
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hzu.translate.entity.Team">
     update trans_team
-    set user_id = #{userId,jdbcType=BIGINT},
+    set user_id = #{userId,jdbcType=VARCHAR},
       team_name = #{teamName,jdbcType=VARCHAR},
       member_quantity = #{memberQuantity,jdbcType=INTEGER},
       organization = #{organization,jdbcType=VARCHAR},
       team_pic = #{teamPic,jdbcType=VARCHAR},
+      sort_order = #{sortOrder,jdbcType=INTEGER},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       team_describe = #{teamDescribe,jdbcType=LONGVARCHAR}
@@ -159,11 +172,12 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hzu.translate.entity.Team">
     update trans_team
-    set user_id = #{userId,jdbcType=BIGINT},
+    set user_id = #{userId,jdbcType=VARCHAR},
       team_name = #{teamName,jdbcType=VARCHAR},
       member_quantity = #{memberQuantity,jdbcType=INTEGER},
       organization = #{organization,jdbcType=VARCHAR},
       team_pic = #{teamPic,jdbcType=VARCHAR},
+      sort_order = #{sortOrder,jdbcType=INTEGER},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}

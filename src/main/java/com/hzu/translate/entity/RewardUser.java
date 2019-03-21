@@ -1,67 +1,43 @@
 package com.hzu.translate.entity;
 
-import java.io.Serializable;
-
-public class RewardUser implements Serializable {
-    private Long id;
-
-    private Long userId;
-
-    private Long rewardId;
-
+public class RewardUser extends RewardUserKey {
     private Integer isGet;
 
     private Integer isAttention;
+
+    private Integer isAdopt;
+
+    private Integer isSubmission;
+
+    private Integer sortOrder;
 
     private String translationFile;
 
     private String translation;
 
-    public RewardUser(Long id, Long userId, Long rewardId, Integer isGet, Integer isAttention, String translationFile) {
-        this.id = id;
-        this.userId = userId;
-        this.rewardId = rewardId;
+    public RewardUser(String userId, Long rewardId, Integer isGet, Integer isAttention, Integer isAdopt, Integer isSubmission, Integer sortOrder, String translationFile) {
+        super(userId, rewardId);
         this.isGet = isGet;
         this.isAttention = isAttention;
+        this.isAdopt = isAdopt;
+        this.isSubmission = isSubmission;
+        this.sortOrder = sortOrder;
         this.translationFile = translationFile;
     }
 
-    public RewardUser(Long id, Long userId, Long rewardId, Integer isGet, Integer isAttention, String translationFile, String translation) {
-        this.id = id;
-        this.userId = userId;
-        this.rewardId = rewardId;
+    public RewardUser(String userId, Long rewardId, Integer isGet, Integer isAttention, Integer isAdopt, Integer isSubmission, Integer sortOrder, String translationFile, String translation) {
+        super(userId, rewardId);
         this.isGet = isGet;
         this.isAttention = isAttention;
+        this.isAdopt = isAdopt;
+        this.isSubmission = isSubmission;
+        this.sortOrder = sortOrder;
         this.translationFile = translationFile;
         this.translation = translation;
     }
 
     public RewardUser() {
         super();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getRewardId() {
-        return rewardId;
-    }
-
-    public void setRewardId(Long rewardId) {
-        this.rewardId = rewardId;
     }
 
     public Integer getIsGet() {
@@ -78,6 +54,30 @@ public class RewardUser implements Serializable {
 
     public void setIsAttention(Integer isAttention) {
         this.isAttention = isAttention;
+    }
+
+    public Integer getIsAdopt() {
+        return isAdopt;
+    }
+
+    public void setIsAdopt(Integer isAdopt) {
+        this.isAdopt = isAdopt;
+    }
+
+    public Integer getIsSubmission() {
+        return isSubmission;
+    }
+
+    public void setIsSubmission(Integer isSubmission) {
+        this.isSubmission = isSubmission;
+    }
+
+    public Integer getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
     }
 
     public String getTranslationFile() {

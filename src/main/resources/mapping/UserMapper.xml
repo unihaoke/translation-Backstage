@@ -3,7 +3,7 @@
 <mapper namespace="com.hzu.translate.dao.UserMapper">
   <resultMap id="BaseResultMap" type="com.hzu.translate.entity.User">
     <constructor>
-      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <idArg column="id" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="user_name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="email" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="profession" javaType="java.lang.String" jdbcType="VARCHAR" />
@@ -16,23 +16,23 @@
   <sql id="Base_Column_List">
     id, user_name, email, profession, user_level, current_experience, created_time, updated_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="string" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from trans_user
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <delete id="deleteByPrimaryKey" parameterType="string">
     delete from trans_user
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.hzu.translate.entity.User">
     insert into trans_user (id, user_name, email, 
       profession, user_level, current_experience, 
       created_time, updated_time)
-    values (#{id,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
       #{profession,jdbcType=VARCHAR}, #{userLevel,jdbcType=VARCHAR}, #{currentExperience,jdbcType=BIGINT}, 
-      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP})
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.hzu.translate.entity.User">
     insert into trans_user
@@ -64,7 +64,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
-        #{id,jdbcType=BIGINT},
+        #{id,jdbcType=VARCHAR},
       </if>
       <if test="userName != null">
         #{userName,jdbcType=VARCHAR},
@@ -82,10 +82,10 @@
         #{currentExperience,jdbcType=BIGINT},
       </if>
       <if test="createdTime != null">
-        #{createdTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="updatedTime != null">
-        #{updatedTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
     </trim>
   </insert>
@@ -108,10 +108,10 @@
         current_experience = #{currentExperience,jdbcType=BIGINT},
       </if>
       <if test="createdTime != null">
-        created_time = #{createdTime,jdbcType=TIMESTAMP},
+        created_time = now(),
       </if>
       <if test="updatedTime != null">
-        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+        updated_time = now(),
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -123,8 +123,13 @@
       profession = #{profession,jdbcType=VARCHAR},
       user_level = #{userLevel,jdbcType=VARCHAR},
       current_experience = #{currentExperience,jdbcType=BIGINT},
-      created_time = #{createdTime,jdbcType=TIMESTAMP},
-      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
+      created_time = now(),
+      updated_time = now()
+    where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectUserId" parameterType="string" resultType="int">
+    SELECT count(*)
+    FROM trans_user
+    WHERE id = #{id,jdbcType=VARCHAR}
+  </select>
 </mapper>

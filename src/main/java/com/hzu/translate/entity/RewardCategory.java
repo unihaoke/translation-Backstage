@@ -1,12 +1,11 @@
 package com.hzu.translate.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.io.Serializable;
 import java.util.Date;
 
-public class RewardCategory implements Serializable {
+public class RewardCategory {
     private Long id;
+
+    private Long rewardId;
 
     private String categoryName;
 
@@ -16,14 +15,13 @@ public class RewardCategory implements Serializable {
 
     private Integer sortOrder;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date updatedTime;
 
-    public RewardCategory(Long id, String categoryName, Long parentId, Integer status, Integer sortOrder, Date createdTime, Date updatedTime) {
+    public RewardCategory(Long id, Long rewardId, String categoryName, Long parentId, Integer status, Integer sortOrder, Date createdTime, Date updatedTime) {
         this.id = id;
+        this.rewardId = rewardId;
         this.categoryName = categoryName;
         this.parentId = parentId;
         this.status = status;
@@ -42,6 +40,14 @@ public class RewardCategory implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getRewardId() {
+        return rewardId;
+    }
+
+    public void setRewardId(Long rewardId) {
+        this.rewardId = rewardId;
     }
 
     public String getCategoryName() {

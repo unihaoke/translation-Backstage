@@ -1,11 +1,8 @@
 package com.hzu.translate.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.io.Serializable;
 import java.util.Date;
 
-public class Notice implements Serializable {
+public class Notice {
     private Long id;
 
     private Long teamId;
@@ -14,10 +11,8 @@ public class Notice implements Serializable {
 
     private String publishName;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date updatedTime;
 
     private String noticeContent;

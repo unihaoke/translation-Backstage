@@ -7,9 +7,7 @@ import java.util.Date;
  */
 public class UserRewardVo {
 
-    private Long Id;
-
-    private Long userId;
+    private String userId;
 
     private Long rewardId;
 
@@ -35,17 +33,40 @@ public class UserRewardVo {
 
     private String rewardInformation;
 
+    private Integer total_attention;
+
+    private String translation;
+
+    private Integer is_Submission;
+
     private Date createdTime;
 
     private Date updatedTime;
 
-    public Long getId() {
-        return Id;
+    public Integer getIs_Submission() {
+        return is_Submission;
     }
 
-    public void setId(Long id) {
-        Id = id;
+    public void setIs_Submission(Integer is_Submission) {
+        this.is_Submission = is_Submission;
     }
+
+    public String getTranslation() {
+        return translation;
+    }
+
+    public void setTranslation(String translation) {
+        this.translation = translation;
+    }
+
+    public Integer getTotal_attention() {
+        return total_attention;
+    }
+
+    public void setTotal_attention(Integer total_attention) {
+        this.total_attention = total_attention;
+    }
+
 
     public Date getCreatedTime() {
         return createdTime;
@@ -63,11 +84,11 @@ public class UserRewardVo {
         this.updatedTime = updatedTime;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

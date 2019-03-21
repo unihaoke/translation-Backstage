@@ -16,7 +16,7 @@ public class RewardController {
 
 
     @GetMapping(value = "/{userId}")
-    public Result rewardList(@PathVariable Long userId){
+    public Result rewardList(@PathVariable String userId){
         return rewardService.findAll(userId);
     }
 
@@ -36,7 +36,7 @@ public class RewardController {
     }
 
     @GetMapping(value = "/{userId}/{type}")
-    public Result findReward(@PathVariable Long userId,@PathVariable Long type){//type类型1为免费，2为收费，3为计算机，4为金融，5为体育
+    public Result findReward(@PathVariable String userId,@PathVariable Long type){//type类型1为免费，2为收费，3为计算机，4为金融，5为体育
         return rewardService.findRewardByType(userId,type);
     }
 }

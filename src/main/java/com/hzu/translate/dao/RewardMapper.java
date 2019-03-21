@@ -20,9 +20,13 @@ public interface RewardMapper {
 
     int updateByPrimaryKey(Reward record);
 
-    List<Reward> findAll(Long userId);
+    List<Reward> findAll();
 
-    List<Reward> findRewardByType(@Param(value = "userId")Long userId,@Param(value = "categoryId")Long categoryId);
+    List<Reward> findRewardByType(Long type);
 
-    List<Reward> findRewardByUserId(@Param(value = "userId")Long userId);
+    List<Reward> findRewardByUserId(String userId);
+
+    List<Reward> findRewardByFreeMoney();
+
+    List<Reward> findRewardByMoney();
 }

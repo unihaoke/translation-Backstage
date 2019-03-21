@@ -1,12 +1,11 @@
 package com.hzu.translate.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.io.Serializable;
 import java.util.Date;
 
-public class Task implements Serializable {
+public class Task {
     private Long id;
+
+    private String userId;
 
     private Long teamId;
 
@@ -20,21 +19,19 @@ public class Task implements Serializable {
 
     private String translateFile;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date taskDeadline;
 
     private Integer taskType;
 
     private String taskSchedule;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
 
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date updatedTime;
 
-    public Task(Long id, Long teamId, String taskTitle, Integer taskStatus, String taskGrouping, String sourceFile, String translateFile, Date taskDeadline, Integer taskType, String taskSchedule, Date createdTime, Date updatedTime) {
+    public Task(Long id, String userId, Long teamId, String taskTitle, Integer taskStatus, String taskGrouping, String sourceFile, String translateFile, Date taskDeadline, Integer taskType, String taskSchedule, Date createdTime, Date updatedTime) {
         this.id = id;
+        this.userId = userId;
         this.teamId = teamId;
         this.taskTitle = taskTitle;
         this.taskStatus = taskStatus;
@@ -58,6 +55,14 @@ public class Task implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
     }
 
     public Long getTeamId() {
