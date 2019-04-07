@@ -26,6 +26,8 @@ public class Reward {
     @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date deadline;
 
+    private Integer categoryId;
+
     @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
 
@@ -34,7 +36,15 @@ public class Reward {
 
     private String rewardInformation;
 
-    public Reward(Long id, String userId, Integer rewardStatus, String rewardSchedule, Integer rewardExperience, Integer totalAttention, Integer rewardType, Integer rewardMoney, String uploadFile, Date deadline, Date createdTime, Date updatedTime) {
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Reward(Long id, String userId, Integer rewardStatus, String rewardSchedule, Integer rewardExperience, Integer totalAttention, Integer rewardType, Integer rewardMoney, String uploadFile, Date deadline,Integer categoryId, Date createdTime, Date updatedTime) {
         this.id = id;
         this.userId = userId;
         this.rewardStatus = rewardStatus;
@@ -45,11 +55,12 @@ public class Reward {
         this.rewardMoney = rewardMoney;
         this.uploadFile = uploadFile;
         this.deadline = deadline;
+        this.categoryId = categoryId;
         this.createdTime = createdTime;
         this.updatedTime = updatedTime;
     }
 
-    public Reward(Long id, String userId, Integer rewardStatus, String rewardSchedule, Integer rewardExperience, Integer totalAttention, Integer rewardType, Integer rewardMoney, String uploadFile, Date deadline, Date createdTime, Date updatedTime, String rewardInformation) {
+    public Reward(Long id, String userId, Integer rewardStatus, String rewardSchedule, Integer rewardExperience, Integer totalAttention, Integer rewardType, Integer rewardMoney, String uploadFile, Date deadline,Integer categoryId, Date createdTime, Date updatedTime, String rewardInformation) {
         this.id = id;
         this.userId = userId;
         this.rewardStatus = rewardStatus;
@@ -60,6 +71,7 @@ public class Reward {
         this.rewardMoney = rewardMoney;
         this.uploadFile = uploadFile;
         this.deadline = deadline;
+        this.categoryId = categoryId;
         this.createdTime = createdTime;
         this.updatedTime = updatedTime;
         this.rewardInformation = rewardInformation;

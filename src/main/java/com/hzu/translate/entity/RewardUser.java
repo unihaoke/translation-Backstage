@@ -1,5 +1,9 @@
 package com.hzu.translate.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
+
 public class RewardUser extends RewardUserKey {
     private Integer isGet;
 
@@ -15,7 +19,10 @@ public class RewardUser extends RewardUserKey {
 
     private String translation;
 
-    public RewardUser(String userId, Long rewardId, Integer isGet, Integer isAttention, Integer isAdopt, Integer isSubmission, Integer sortOrder, String translationFile) {
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
+    private Date updatedTime;
+
+    public RewardUser(String userId, Long rewardId, Integer isGet, Integer isAttention, Integer isAdopt, Integer isSubmission, Integer sortOrder, String translationFile,Date updatedTime) {
         super(userId, rewardId);
         this.isGet = isGet;
         this.isAttention = isAttention;
@@ -23,9 +30,10 @@ public class RewardUser extends RewardUserKey {
         this.isSubmission = isSubmission;
         this.sortOrder = sortOrder;
         this.translationFile = translationFile;
+        this.updatedTime = updatedTime;
     }
 
-    public RewardUser(String userId, Long rewardId, Integer isGet, Integer isAttention, Integer isAdopt, Integer isSubmission, Integer sortOrder, String translationFile, String translation) {
+    public RewardUser(String userId, Long rewardId, Integer isGet, Integer isAttention, Integer isAdopt, Integer isSubmission, Integer sortOrder, String translationFile, String translation ,Date updatedTime) {
         super(userId, rewardId);
         this.isGet = isGet;
         this.isAttention = isAttention;
@@ -34,6 +42,15 @@ public class RewardUser extends RewardUserKey {
         this.sortOrder = sortOrder;
         this.translationFile = translationFile;
         this.translation = translation;
+        this.updatedTime = updatedTime;
+    }
+
+    public Date getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Date updatedTime) {
+        this.updatedTime = updatedTime;
     }
 
     public RewardUser() {

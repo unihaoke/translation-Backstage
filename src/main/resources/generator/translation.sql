@@ -1,4 +1,5 @@
 
+
 -- ----------------------------
 -- Records of tans_user
 -- ----------------------------
@@ -176,7 +177,8 @@ CREATE TABLE trans_reward (
     reward_type int DEFAULT 0 COMMENT '悬赏的类型，0为英译中，1为中译英',
     reward_money int DEFAULT 0 COMMENT '悬赏的金额',
     upload_file varchar(300) COMMENT '上传的文件',
-    deadline date COMMENT '截止日期',
+    deadline datetime COMMENT '截止日期',
+    categoryId int DEFAULT 1 COMMENT '悬赏分类，1为计算，2为金融，3为体育',
     created_time datetime NOT NULL,
     updated_time datetime NOT NULL,
     PRIMARY KEY (`id`)
@@ -187,34 +189,34 @@ CREATE TABLE trans_reward (
 -- ----------------------------
 INSERT INTO trans_reward VALUES ('1','1','0','the romance of three kingdoms is one of the most famous books in china.it is begining from the late han dynasty to the
 early jin dynasty,about one centry.the anthor of it is luo guanzhong.luo guanzhong was born in ming dynasty.he was also the writer of water
-marsh.','4','5','5','0','60',null,'2018-2-13 14:41:57','2018-2-13 14:41:57','2019-2-13 14:41:57');
+marsh.','4','5','5','0','60',null,'2018-2-13 14:41:57',1,'2018-2-13 14:41:57','2019-2-13 14:41:57');
 INSERT INTO trans_reward VALUES ('2','1','0','A few days ago, I went to the railway station to see my friend off. On the way I saw street leaners burning garbage. I
 know they were trying to get rid of rubbish in a way they thought was“Taking a shortcut.” I don’t think, however, it’s proper to clear away rubbish by such a
-means.','1','5','4','0','60',null,'2018-2-13 14:41:57','2019-2-13 14:41:57','2018-2-13 14:41:57');
+means.','1','5','4','0','60',null,'2018-2-13 14:41:57',1,'2019-2-13 14:41:57','2018-2-13 14:41:57');
 INSERT INTO trans_reward VALUES ('3','1','0','Burning things does harm to people. It’s known to all that burning rubbish will give off poisonous smoke and dust which
 in turn pollute air. Many people contract cancer as a result of breathing the polluted air. Some of them even die of it.','2','5','2','0','60',null,'2018-2-13
 14:41:57','2018-2-13 14:41:57','2019-2-13 14:41:57');
 INSERT INTO trans_reward VALUES ('4','1','0','As we know, TV plays an important part in our daily life. It’s quicker and more convenient to get information from TV
 than from newspapers. Providing us with lively and interesting moving pictures, TV enables us not only to see what is happening in the world but to learn many things,
 including foreign languages. So it is not reasonable to forbid students to watch TV. But watching TV too long is not good. Sitting in front of TV all day does harm to
-our eyes and wastes our time for study.','5','5','0','0','60',null,'2018-2-13 14:41:57','2018-2-13 14:41:57','2018-2-13 14:41:57');
+our eyes and wastes our time for study.','5','5','0','0','60',null,'2018-2-13 14:41:57',1,'2018-2-13 14:41:57','2018-2-13 14:41:57');
 INSERT INTO trans_reward VALUES ('5','1','0','As, middle school students, we must study hard and study English well. English will be more useful than ever before in
-the world. Most important of all, support our country at this time of challenge.','4','5','2','0','60',null,'2018-2-13 14:41:57','2018-2-13 14:41:57','2018-2-13
+the world. Most important of all, support our country at this time of challenge.','4','5','2','0','60',null,'2018-2-13 14:41:57',1,'2018-2-13 14:41:57','2018-2-13
 14:41:57');
 INSERT INTO trans_reward VALUES ('6','2','0','WTO is an international organization that works to guarantee fair trade between many nations. It was established on
 January 1st, !1995, taking the place of Multilateral Trade Organization. Now China has entered into WTO and become a member of it. In the future it will be e,nvenient
 for our country to develop trade relations with many other nations; And any dispute will be handled constructively under the same
-rules.','4','5','4','0','60',null,'2018-2-13 14:41:57','2018-2-13 14:41:57','2018-2-13 14:41:57');
+rules.','4','5','4','0','60',null,'2018-2-13 14:41:57',1,'2018-2-13 14:41:57','2018-2-13 14:41:57');
 INSERT INTO trans_reward VALUES ('7','2','0','I think that Chinas entry into WTO will have a lot of long-term social and economic benefits. It can enhance economic
-growth aad will have much influence on peoples ideology.','3','5','0','0','60',null,'2018-2-13 14:41:57','2018-2-13 14:41:57','2018-2-13 14:41:57');
+growth aad will have much influence on peoples ideology.','3','5','0','0','60',null,'2018-2-13 14:41:57',1,'2018-2-13 14:41:57','2018-2-13 14:41:57');
 INSERT INTO trans_reward VALUES ('8','2','0','You can donate money or materials. If you would like to donate money, please put your money into the donation box at the
 entrance to Teaching Building. Two volunteer students are available there to offer help if necessary. (www.zuowenla.cn)If you would like to donate clothes, quilts or
-others, please bring them to our stand in front of the school gate.','4','5','1','0','60',null,'2018-2-13 14:41:57','2018-2-13 14:41:57','2018-2-13 14:41:57');
+others, please bring them to our stand in front of the school gate.','4','5','1','0','60',null,'2018-2-13 14:41:57',1,'2018-2-13 14:41:57','2018-2-13 14:41:57');
 INSERT INTO trans_reward VALUES ('9','2','0','The Donation program will be held between 11:00 and 14:00, tomorrow and the day after tomorrow.All the donated money and
-materials will be collected in order and submitted to Chinese Red Cross Foundation as soon as possible.','4','5','2','0','60',null,'2018-2-13 14:41:57','2018-2-13
+materials will be collected in order and submitted to Chinese Red Cross Foundation as soon as possible.','4','5','2','0','60',null,'2018-2-13 14:41:57',1,'2018-2-13
 14:41:57','2018-2-13 14:41:57');
 INSERT INTO trans_reward VALUES ('10','2','0','But, fortunately, love is around us: the Communist party helps us, the army helps us, the people all over the world help
-us. They offer us with money, goods, love and so on !','2','5','2','0','60',null,'2019-2-13 14:41:57','2019-2-13 14:41:57','2019-2-13 14:41:57');
+us. They offer us with money, goods, love and so on !','2','5','2','0','60',null,'2019-2-13 14:41:57',1,'2019-2-13 14:41:57','2019-2-13 14:41:57');
 
 
 
@@ -233,6 +235,7 @@ CREATE TABLE trans_reward_user (
     sort_order int DEFAULT 0 COMMENT '排序',
     translation text COMMENT '悬赏译本',
     translation_file varchar(300) COMMENT '悬赏文件',
+    updated_time datetime NOT NULL,
     PRIMARY KEY (user_id,reward_id),
     CONSTRAINT `trans_reward_user_1` FOREIGN KEY (`user_id`) REFERENCES `trans_user` (`id`) ON DELETE CASCADE ,
     CONSTRAINT `trans_reward_user_2` FOREIGN KEY (`reward_id`) REFERENCES `trans_reward` (`id`) ON DELETE CASCADE
@@ -241,14 +244,6 @@ CREATE TABLE trans_reward_user (
 -- ----------------------------
 -- Records of trans_reward_user
 -- ----------------------------
-INSERT INTO trans_reward_user VALUES ('1','1','0','1','0','0','0',null,null);
-INSERT INTO trans_reward_user VALUES ('1','1','0','0','0','0','0',null,null);
-INSERT INTO trans_reward_user VALUES ('2','2','1','1','0','0','0',null,null);
-INSERT INTO trans_reward_user VALUES ('2','2','1','0','0','0','0',null,null);
-
-
-
-
 
 
 -- ----------------------------
@@ -274,18 +269,3 @@ CREATE TABLE trans_reward_category (
 INSERT INTO trans_reward_category VALUES ('1','0','计算机','0','1','1','2019-2-13 14:41:57','2019-2-13 14:41:57');
 INSERT INTO trans_reward_category VALUES ('2','0','金融','0','1','1','2019-2-13 14:41:57','2019-2-13 14:41:57');
 INSERT INTO trans_reward_category VALUES ('3','0','体育','0','1','1','2019-2-13 14:41:57','2019-2-13 14:41:57');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

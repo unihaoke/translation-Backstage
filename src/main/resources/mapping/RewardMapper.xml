@@ -13,6 +13,7 @@
       <arg column="reward_money" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="upload_file" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="deadline" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="categoryId" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="created_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="updated_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
@@ -29,6 +30,7 @@
       <arg column="reward_money" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="upload_file" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="deadline" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="categoryId" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="created_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="updated_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="reward_information" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
@@ -58,7 +60,7 @@
 
   <sql id="Base_Column_List">
     id, user_id, reward_status, reward_schedule, reward_experience, total_attention, 
-    reward_type, reward_money, upload_file, deadline, created_time, updated_time
+    reward_type, reward_money, upload_file, deadline,categoryId, created_time, updated_time
   </sql>
   <sql id="Blob_Column_List">
     reward_information
@@ -78,12 +80,12 @@
   <insert id="insert" parameterType="com.hzu.translate.entity.Reward" useGeneratedKeys="true" keyProperty="id">
     insert into trans_reward (id, user_id, reward_status, 
       reward_schedule, reward_experience, total_attention, 
-      reward_type, reward_money, upload_file, 
+      reward_type, reward_money, upload_file,categoryId,
       deadline, created_time, updated_time, 
       reward_information)
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{rewardStatus,jdbcType=INTEGER}, 
       #{rewardSchedule,jdbcType=VARCHAR}, #{rewardExperience,jdbcType=INTEGER}, 0,
-      #{rewardType,jdbcType=INTEGER}, #{rewardMoney,jdbcType=INTEGER}, #{uploadFile,jdbcType=VARCHAR}, 
+      #{rewardType,jdbcType=INTEGER}, #{rewardMoney,jdbcType=INTEGER}, #{uploadFile,jdbcType=VARCHAR},#{categoryId,jdbcType=INTEGER},
       #{deadline,jdbcType=DATE}, now(), now(),
       #{rewardInformation,jdbcType=LONGVARCHAR})
   </insert>
@@ -119,6 +121,9 @@
       </if>
       <if test="deadline != null">
         deadline,
+      </if>
+      <if test="categoryId != null">
+        categoryId,
       </if>
       <if test="createdTime != null">
         created_time,
@@ -161,11 +166,14 @@
       <if test="deadline != null">
         #{deadline,jdbcType=TIMESTAMP},
       </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
       <if test="createdTime != null">
         #{createdTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updatedTime != null">
-        #{updatedTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="rewardInformation != null">
         #{rewardInformation,jdbcType=LONGVARCHAR},
@@ -202,6 +210,9 @@
       <if test="deadline != null">
         deadline = #{deadline,jdbcType=TIMESTAMP},
       </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
       <if test="createdTime != null">
         created_time = #{createdTime,jdbcType=TIMESTAMP},
       </if>
@@ -225,6 +236,7 @@
       reward_money = #{rewardMoney,jdbcType=INTEGER},
       upload_file = #{uploadFile,jdbcType=VARCHAR},
       deadline = #{deadline,jdbcType=TIMESTAMP},
+      categoryId = #{categoryId,jdbcType=INTEGER},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
       updated_time = now(),
       reward_information = #{rewardInformation,jdbcType=LONGVARCHAR}
@@ -241,6 +253,7 @@
       reward_money = #{rewardMoney,jdbcType=INTEGER},
       upload_file = #{uploadFile,jdbcType=VARCHAR},
       deadline = #{deadline,jdbcType=TIMESTAMP},
+      categoryId = #{categoryId,jdbcType=INTEGER},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
       updated_time = now()
     where id = #{id,jdbcType=BIGINT}
@@ -255,21 +268,21 @@
   </select>
   <select id="findRewardByType" parameterType="map" resultMap="ResultMapWithBLOBs">
     select  r.id, r.user_id, r.reward_status, r.reward_schedule, r.reward_experience, r.total_attention,
-    r.reward_type, r.reward_money, r.upload_file, r.deadline, r.created_time, r.updated_time,r.reward_information
-    FROM trans_reward r,trans_reward_category c
-    where c.parent_id = #{type,jdbcType=INTEGER} AND c.reward_id = r.id AND r.id not in (select reward_id from trans_reward_user where user_id =#{userId,jdbcType=VARCHAR}) AND r.user_id !=#{userId,jdbcType=VARCHAR}
+    r.reward_type, r.reward_money, r.upload_file, r.deadline,r.categoryId, r.created_time, r.updated_time,r.reward_information
+    FROM trans_reward r
+    where r.categoryId = #{type,jdbcType=INTEGER}  AND r.id not in (select reward_id from trans_reward_user where user_id =#{userId,jdbcType=VARCHAR}) AND r.user_id !=#{userId,jdbcType=VARCHAR}
     ORDER BY r.created_time DESC
   </select>
   <select id="findRewardByFreeMoney" parameterType="string"  resultMap="ResultMapWithBLOBs">
    select  id, c.user_id, c.reward_status,c.reward_schedule, c.reward_experience, c.total_attention,
-    c.reward_type, c.reward_money,c.upload_file, c.deadline, c.created_time, c.updated_time,c.reward_information
+    c.reward_type, c.reward_money,c.upload_file, c.deadline,c.categoryId, c.created_time, c.updated_time,c.reward_information
     FROM trans_reward c
     where  reward_money =0  AND c.user_id!=#{userId,jdbcType=VARCHAR} AND id not in (select reward_id from trans_reward_user where user_id =#{userId,jdbcType=VARCHAR})
     ORDER BY created_time DESC
   </select>
   <select id="findRewardByMoney" resultMap="ResultMapWithBLOBs">
     select  id, c.user_id, c.reward_status,c.reward_schedule, c.reward_experience, c.total_attention,
-    c.reward_type, c.reward_money,c.upload_file, c.deadline, c.created_time, c.updated_time,c.reward_information
+    c.reward_type, c.reward_money,c.upload_file, c.deadline, c.categoryId,c.created_time, c.updated_time,c.reward_information
     FROM trans_reward c
     where  reward_money >0  AND c.user_id!=#{userId,jdbcType=VARCHAR} AND id not in (select reward_id from trans_reward_user where user_id =#{userId,jdbcType=VARCHAR})
     ORDER BY created_time DESC
