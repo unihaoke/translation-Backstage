@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * 结合了用户和悬赏的抽象对象
  */
-public class UserRewardVo {
+public class UserRewardVo2 {
 
     private String userId;
 
@@ -21,9 +21,9 @@ public class UserRewardVo {
 
     private Integer rewardExperience;
 
-    private Long categoryId;
-
     private Integer rewardType;
+
+    private Integer totalAttention;
 
     private Integer rewardMoney;
 
@@ -33,24 +33,20 @@ public class UserRewardVo {
 
     private String rewardInformation;
 
-    private Integer total_attention;
-
     private String translation;
 
     private Integer is_Submission;
-
-    private Integer is_adopt;
 
     private Date createdTime;
 
     private Date updatedTime;
 
-    public Integer getIs_adopt() {
-        return is_adopt;
+    public Integer getTotalAttention() {
+        return totalAttention;
     }
 
-    public void setIs_adopt(Integer is_adopt) {
-        this.is_adopt = is_adopt;
+    public void setTotalAttention(Integer totalAttention) {
+        this.totalAttention = totalAttention;
     }
 
     public Integer getIs_Submission() {
@@ -67,14 +63,6 @@ public class UserRewardVo {
 
     public void setTranslation(String translation) {
         this.translation = translation;
-    }
-
-    public Integer getTotal_attention() {
-        return total_attention;
-    }
-
-    public void setTotal_attention(Integer total_attention) {
-        this.total_attention = total_attention;
     }
 
 
@@ -148,14 +136,6 @@ public class UserRewardVo {
 
     public void setRewardExperience(Integer rewardExperience) {
         this.rewardExperience = rewardExperience;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
     }
 
     public Integer getRewardType() {

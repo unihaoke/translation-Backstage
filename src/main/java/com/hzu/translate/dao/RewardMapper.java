@@ -22,11 +22,15 @@ public interface RewardMapper {
 
     List<Reward> findAll();
 
-    List<Reward> findRewardByType(Long type);
+    List<Reward> findRewardByType(@Param(value = "type") Long type,@Param(value = "userId")String userId);
 
     List<Reward> findRewardByUserId(String userId);
 
-    List<Reward> findRewardByFreeMoney();
+    List<Reward> findRewardByFreeMoney(String userId);
 
-    List<Reward> findRewardByMoney();
+    List<Reward> findRewardByMoney(String userId);
+
+    List<Reward> findAllByUser(String userId);
+
+
 }

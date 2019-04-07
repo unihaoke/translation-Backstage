@@ -62,7 +62,7 @@
       sort_order, translation_file, translation
       )
     values (#{userId,jdbcType=VARCHAR}, #{rewardId,jdbcType=BIGINT}, #{isGet,jdbcType=INTEGER},
-      #{isAttention,jdbcType=INTEGER}, #{isAdopt,jdbcType=INTEGER}, #{isSubmission,jdbcType=INTEGER}, 
+      0, 0, 0,
       #{sortOrder,jdbcType=INTEGER}, #{translationFile,jdbcType=VARCHAR}, #{translation,jdbcType=LONGVARCHAR}
       )
   </insert>

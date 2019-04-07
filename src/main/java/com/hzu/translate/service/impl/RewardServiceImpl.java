@@ -9,11 +9,18 @@ import com.hzu.translate.entity.RewardUser;
 import com.hzu.translate.service.RewardService;
 import com.hzu.translate.vo.UserRewardVo;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 悬赏类
@@ -27,6 +34,8 @@ public class RewardServiceImpl implements RewardService {
     private RewardMapper rewardMapper;
     @Autowired
     private RewardUserMapper rewardUserMapper;
+
+    private Logger logger = LoggerFactory.getLogger(RewardServiceImpl.class);
 
     @Override
     public Result findAll(String userId) {
@@ -74,7 +83,11 @@ public class RewardServiceImpl implements RewardService {
         if(reward == null){
             return new Result(false,StatusCode.ERROR,"添加失败");
         }
-        return new Result(true,StatusCode.OK,"添加成功",rewardMapper.insert(reward));
+        int count = rewardMapper.insert(reward);
+        if(count<0){
+            return new Result(false,StatusCode.ERROR,"添加失败");
+        }
+        return new Result(true,StatusCode.OK,"添加成功");
     }
 
     @Override
@@ -85,10 +98,38 @@ public class RewardServiceImpl implements RewardService {
         return new Result(true,StatusCode.OK,"查询成功",getUserRewardVo(userId,type));
     }
 
+    @Override
+    public Result addRewardAndFile(Reward reward, MultipartFile file) {
+        if(reward == null){
+            return new Result(false,StatusCode.ERROR,"添加失败");
+        }
+        if (file.isEmpty()) {
+            return new Result(false,StatusCode.ERROR,"发布失败");
+        }
+        String fileName = file.getOriginalFilename();
+        String filePath = ".";
 
-
-
-
+        String fileExtensionName = fileName.substring(fileName.lastIndexOf(".")+1);
+        String uploadFileName = UUID.randomUUID().toString()+"."+fileExtensionName;
+        logger.info("开始上传文件，上传的文件名:{},上传的路径:{},新文件名:{}",fileName,filePath,uploadFileName);
+        File fileDir = new File(filePath);
+        System.out.println("1:"+fileDir);
+        if(!fileDir.exists()){
+            fileDir.setWritable(true);
+            fileDir.mkdirs();
+        }
+        File targetFile = new File(filePath,uploadFileName);
+        System.out.println(System.getProperty("user.dir"));
+        try {
+            file.transferTo(targetFile);
+            reward.setUploadFile(targetFile.getName());
+            targetFile.delete();
+            return new Result(true,StatusCode.OK,"添加成功",rewardMapper.insert(reward));
+        } catch (IOException e) {
+            logger.error("上传文件异常",e);
+        }
+        return new Result(false,StatusCode.ERROR,"发布失败");
+    }
 
 
 
@@ -102,13 +143,13 @@ public class RewardServiceImpl implements RewardService {
         List<UserRewardVo> userRewardVoList = new ArrayList<>();
         List<Reward> rewardList =null;
         if(type == null){
-            rewardList = rewardMapper.findAll();
+            rewardList = rewardMapper.findAllByUser(userId);
         }else if(type.intValue() == -1){
-            rewardList = rewardMapper.findRewardByFreeMoney();
+            rewardList = rewardMapper.findRewardByFreeMoney(userId);
         }else if(type.intValue() == 0){
-            rewardList = rewardMapper.findRewardByMoney();
+            rewardList = rewardMapper.findRewardByMoney(userId);
         }else{
-            rewardList = rewardMapper.findRewardByType(type);
+            rewardList = rewardMapper.findRewardByType(type,userId);
         }
         if(CollectionUtils.isNotEmpty(rewardList)){
             for (Reward reward :rewardList){
@@ -128,15 +169,15 @@ public class RewardServiceImpl implements RewardService {
                 userRewardVo.setUpdatedTime(reward.getUpdatedTime());
                 userRewardVo.setIsGet(0);
                 userRewardVo.setIsAttention(0);
-                List<RewardUser> rewardUserList = rewardUserMapper.findRewardUserById(userId);
-                if(CollectionUtils.isNotEmpty(rewardUserList)){
-                    for(RewardUser rewardUser : rewardUserList){
-                        if(reward.getId() == rewardUser.getRewardId()){
-                            userRewardVo.setIsAttention(rewardUser.getIsAttention());
-                            userRewardVo.setIsGet(rewardUser.getIsGet());
-                        }
-                    }
-                }
+//                List<RewardUser> rewardUserList = rewardUserMapper.findRewardUserById(userId);
+//                if(CollectionUtils.isNotEmpty(rewardUserList)){
+//                    for(RewardUser rewardUser : rewardUserList){
+//                        if(reward.getId() == rewardUser.getRewardId()){
+//                            userRewardVo.setIsAttention(rewardUser.getIsAttention());
+//                            userRewardVo.setIsGet(rewardUser.getIsGet());
+//                        }
+//                    }
+//                }
                 userRewardVoList.add(userRewardVo);
             }
         }
